@@ -26,3 +26,11 @@ No, but it is pipe-able! From the 'net: `cat input  | grep "[aeiou].*[aeiou].*[a
 * I suck at regex, so just used brute force. The input strings are short enough that it runs quickly.
 
 From the web, the first rule can be done with `re.search(r"(..).*\1", line)` and the second rule with `re.search(r"(.).\1", line)`
+
+## Day 6
+### Part 1
+* Simple enough to do. Used regexes because day 5 showed me that I needed some practise!
+### Part 2
+* Slight variation.
+
+Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
