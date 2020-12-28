@@ -22,14 +22,16 @@ for line in puzzle_input:
     if not ans_r1:
         # print(f"r1 failed for {line}")
         continue
+
     # Use back reference to see if char repeated
     ans_r2 = re.search(r"(.)\1+", line)
     if not ans_r2:
         # print(f"r2 failed for {line}")
         continue
-    # Use lookahead to find xy, ab, cd or pq
-    ans_r3 = re.search(r"(?!.*xy|.*ab|.*cd|.*pq)", line)
-    if ans_r3.span() != (0, 0):
+
+    # Check for disallowed pairs
+    ans_r3 = re.search(r"ab|cd|pq|xy", line)
+    if ans_r3:
         # print(f"r3 failed for {line}")
         continue
     nice += 1
