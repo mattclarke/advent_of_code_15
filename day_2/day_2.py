@@ -9,12 +9,12 @@ total = 0
 
 for present in puzzle_input:
     l, w, h = (int(x) for x in present.split("x"))
-    lw = l*w
-    wh = w*h
-    hl = h*l
+    lw = l * w
+    wh = w * h
+    hl = h * l
     slack = min(lw, wh, hl)
 
-    total += 2*lw + 2*wh + 2*hl + slack
+    total += 2 * lw + 2 * wh + 2 * hl + slack
 
 # 1598415
 print(f"answer = {total}")
@@ -32,4 +32,3 @@ for present in puzzle_input:
 
 # 3812909
 print(f"answer = {total}")
-
