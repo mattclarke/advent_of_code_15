@@ -34,3 +34,15 @@ From the web, the first rule can be done with `re.search(r"(..).*\1", line)` and
 * Slight variation.
 
 Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
+
+## Day 7
+### Part 1
+* Loop through the instructions solving and removing the ones that can be solved. Keep going until all are solved.
+### Part 2
+* Slight variation by changing the input for b to be the solution from part 1.
+
+## Day 8
+### Part 1
+*
+### Part 2
+*
