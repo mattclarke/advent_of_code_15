@@ -47,3 +47,8 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 ### Part 2
 * First replace `\\` with `\\\\` and then `"` with `\\"` and it just drops out!
 
+## Day 9
+### Part 1
+* Recursion to visit all the cities then find the minimum distance
+### Part 2
+* Easy - change from `min` to `max`!
