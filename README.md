@@ -43,6 +43,6 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 
 ## Day 8
 ### Part 1
-*
+* Complete brain failure! Replace the "\" with "/" and suddenly everything becomes easier to reason about!
 ### Part 2
-*
+* First replace `\\` with `\\\\` and then `"` with `\\"` and it just drops out!
