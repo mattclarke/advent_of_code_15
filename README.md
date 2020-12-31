@@ -52,3 +52,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * Recursion to visit all the cities then find the minimum distance
 ### Part 2
 * Easy - change from `min` to `max`!
+
+## Day 10
+### Part 1
+* Read the string character by character and keep track of the current number and how many times it is seen.
+### Part 2
+* Repeat the calculation ten more times.
