@@ -64,3 +64,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * Rules are simply enough to implement. Decided to "convert" the password to base-26 so it could be done with simple maths.
 ### Part 2
 * Repeat the process one more time takes ~2 seconds.
+
+## Day 12
+### Part 1
+* re.findall - don't forget the (possible) minus sign!
+### Part 2
+* Recurse through the structure and skip the "red" bits.
