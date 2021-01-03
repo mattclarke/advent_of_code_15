@@ -70,3 +70,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * re.findall - don't forget the (possible) minus sign!
 ### Part 2
 * Recurse through the structure and skip the "red" bits.
+
+## Day 13
+### Part 1
+* Recursion to find the best arrangement, just track the happiness total.
+### Part 2
+* Modified to add "me" as None as the first person and clauses to ignore "me".
