@@ -1,5 +1,3 @@
-import re
-
 PUZZLE_INPUT = "hxbxwxba"
 
 alpha = "abcdefghijklmnopqrstuvwxyz"

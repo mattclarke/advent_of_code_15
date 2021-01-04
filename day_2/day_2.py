@@ -1,7 +1,6 @@
 with open("input.txt") as f:
     PUZZLE_INPUT = f.read()
 
-
 puzzle_input = PUZZLE_INPUT.strip().split("\n")
 print(puzzle_input)
 

@@ -1,3 +1,5 @@
+import re
+
 with open("input.txt") as f:
     PUZZLE_INPUT = f.read()
 
@@ -11,8 +13,6 @@ with open("input.txt") as f:
 
 puzzle_input = PUZZLE_INPUT.strip().split("\n")
 print(puzzle_input)
-
-import re
 
 nice = 0
 

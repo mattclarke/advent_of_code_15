@@ -76,3 +76,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * Recursion to find the best arrangement, just track the happiness total.
 ### Part 2
 * Modified to add "me" as None as the first person and clauses to ignore "me".
+
+## Day 14
+### Part 1
+* Just looping for each second.
+### Part 2
+* Same, but track who has travelled furthest and give them a point.
