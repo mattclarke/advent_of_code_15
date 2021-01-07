@@ -88,3 +88,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * Recursion to try all the possible combinations - is there a better way? Takes ~3 seconds.
 ### Part 2
 * Added an extra optional clause to check calories.
+
+## Day 16
+### Part 1
+* Loop through the rules and remove any Sue that fails. That leaves us with one Sue.
+### Part 2
+* Use a customer comparator to take into account new rules - try to avoid stupid typos which result in the wrong result ;)
