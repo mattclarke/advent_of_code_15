@@ -82,3 +82,9 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 * Just looping for each second.
 ### Part 2
 * Same, but track who has travelled furthest and give them a point.
+
+## Day 15
+### Part 1
+* Recursion to try all the possible combinations - is there a better way? Takes ~3 seconds.
+### Part 2
+* Added an extra optional clause to check calories.
