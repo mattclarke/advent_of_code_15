@@ -1,6 +1,3 @@
-import re
-from functools import reduce
-
 with open("input.txt") as f:
     PUZZLE_INPUT = f.read()
 
