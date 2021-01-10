@@ -99,5 +99,12 @@ Takes ~6 seconds to run each puzzle. Pypy takes < 1 second for both!
 ### Part 1
 * First attempt using recursion is very slow (~25 seconds). As there are multiple containers the same size, I create a tuple
 of the size and a unique number so they appear different when hashed, so I can use a set.
+* TODO: can it be sped up?
 ### Part 2
 * Keeping the solutions from part 1 made this trivial.
+
+## Day 18
+### Part 1
+* Conway's game of life but with fixed bounds.
+### Part 2
+* Always ensure the corners are lit.
