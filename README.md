@@ -108,3 +108,9 @@ of the size and a unique number so they appear different when hashed, so I can u
 * Conway's game of life but with fixed bounds.
 ### Part 2
 * Always ensure the corners are lit.
+
+## Day 19
+### Part 1
+* Just need to remember that some molecules are more than one character, e.g. Si.
+### Part 2
+*
