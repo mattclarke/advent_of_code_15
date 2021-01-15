@@ -117,7 +117,14 @@ of the size and a unique number so they appear different when hashed, so I can u
 
 ## Day 20
 ### Part 1
-* Find a local minima then reduce the step size. The step sizes are based on numbers with the most factorials.
-I'm not sure why I have to step back 2 steps sizes, just stumbled across that by luck.
+* Sieving works.
 ### Part 2
-* Simple change, but again, don't understand why stepping back 4 step sizes works...
+* Simple change
+
+Originally tried a more complicated method which works but I don't fully understand it. Kept for future reference ;)
+
+## Day 21
+### Part 1
+* Sieving works.
+### Part 2
+* Simple change

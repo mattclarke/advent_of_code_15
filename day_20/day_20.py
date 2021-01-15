@@ -1,5 +1,45 @@
 PUZZLE_INPUT = 36_000_000
 
+# Part 1
+answer = [0] * 1000000
+done = False
+
+for i in range(1, 1000000):
+    j = i
+    while j < 1000000:
+        answer[j] += i * 10
+        if answer[j] > PUZZLE_INPUT:
+            # 831600
+            print(f"answer = {j}")
+            done = True
+            break
+        j += i
+    if done:
+        break
+
+# Part 2
+answer = [0] * 1000000
+done = False
+
+for i in range(1, 1000000):
+    j = i
+    j_count = 0
+    while j < 1000000:
+        if j_count >= 50:
+            break
+        answer[j] += i * 11
+        if answer[j] > PUZZLE_INPUT:
+            # 884520
+            print(f"answer = {j}")
+            done = True
+            break
+        j += i
+        j_count += 1
+    if done:
+        break
+
+
+# Original solution - works by luck more than anything
 
 # Highest scorers in sections of the houses are going to have the maximum number
 # of factors, e.g. 2, 6, 24, 120
@@ -7,7 +47,7 @@ PUZZLE_INPUT = 36_000_000
 stepsizes = []
 
 total = 1
-for i in range(2, 10):
+for i in range(2, 9):
     total *= i
     stepsizes.insert(0, total)
 
@@ -69,4 +109,3 @@ for stepsize in stepsizes:
 
 # 884520
 print(f"answer = {best_so_far}")
-
