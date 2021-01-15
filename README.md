@@ -113,4 +113,11 @@ of the size and a unique number so they appear different when hashed, so I can u
 ### Part 1
 * Just need to remember that some molecules are more than one character, e.g. Si.
 ### Part 2
+* TODO
+
+## Day 20
+### Part 1
+* Find a local minima then reduce the step size. The step sizes are based on numbers with the most factorials.
+I'm not sure why I have to step back 2 steps sizes, just stumbled across that by luck.
+### Part 2
 *
