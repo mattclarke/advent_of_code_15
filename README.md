@@ -125,6 +125,6 @@ Originally tried a more complicated method which works but I don't fully underst
 
 ## Day 21
 ### Part 1
-* Sieving works.
+* Simple looping.
 ### Part 2
-* Simple change
+* Small change to track cost when losing.
