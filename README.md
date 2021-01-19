@@ -128,3 +128,9 @@ Originally tried a more complicated method which works but I don't fully underst
 * Simple looping.
 ### Part 2
 * Small change to track cost when losing.
+
+## Day 22
+### Part 1
+* Took some time to get the game set up and to get the recursion working. Made a few mistakes with the limits.
+### Part 2
+* Should be simple right?
