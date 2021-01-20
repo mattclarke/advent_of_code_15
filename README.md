@@ -134,3 +134,10 @@ Originally tried a more complicated method which works but I don't fully underst
 * Took some time to get the game set up and to get the recursion working. Made a few mistakes with the limits.
 ### Part 2
 * Should be simple right?
+
+## Day 23
+### Part 1
+* Basic CPU with short instruction set. Didn't read the instructions properly and missed that jio is jump-if-one not
+jump-if-odd. Wasted some time trying to work out what was wrong.
+### Part 2
+* Simple, just change the starting registers.

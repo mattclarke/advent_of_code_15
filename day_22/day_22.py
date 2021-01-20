@@ -39,10 +39,10 @@ SPELLS = {
 def fight_two_rounds(player, boss, spell, active_effects):
     updated_effects = {}
 
-    # For part 2 - not working!
-    # player["Hit Points"] -= 1
-    # if player["Hit Points"] < 1:
-    #     return player, boss, active_effects
+    # For part 2 - not making any difference!!!!!
+    player["Hit Points"] -= 1
+    if player["Hit Points"] < 1:
+        return player, boss, active_effects
 
     for i in range(2):
         # print(player, boss)
