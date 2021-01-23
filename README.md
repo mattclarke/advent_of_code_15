@@ -141,3 +141,12 @@ Originally tried a more complicated method which works but I don't fully underst
 jump-if-odd. Wasted some time trying to work out what was wrong.
 ### Part 2
 * Simple, just change the starting registers.
+
+## Day 24
+### Part 1
+* Find combinations for the first compartment that add up to the target, then check it is possible to reach the target
+from the remaining weights (for the second compartment). Once there is a solution, even if it isn't the final one, we
+can stop recursion on any paths which are worse, so that speeds it up.
+### Part 2
+* Added another compartment.
+
