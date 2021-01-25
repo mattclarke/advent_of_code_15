@@ -145,8 +145,14 @@ jump-if-odd. Wasted some time trying to work out what was wrong.
 ## Day 24
 ### Part 1
 * Find combinations for the first compartment that add up to the target, then check it is possible to reach the target
-from the remaining weights (for the second compartment). Once there is a solution, even if it isn't the final one, we
+from the remaining weights for the remaining compartments. Once there is a solution, even if it isn't the final one, we
 can stop recursion on any paths which are worse, so that speeds it up.
 ### Part 2
 * Added another compartment.
 
+Using itertools to get the possible combinations makes this problem relatively trivial, but I didn't want to do that!
+
+## Day 25
+### Part 1 (the only part)
+* Some basic maths to work out the maximum row number to hit the required row and column and then how to move through
+them.
