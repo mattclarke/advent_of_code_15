@@ -133,7 +133,9 @@ Originally tried a more complicated method which works but I don't fully underst
 ### Part 1
 * Took some time to get the game set up and to get the recursion working. Made a few mistakes with the limits.
 ### Part 2
-* Should be simple right?
+* Should be simple right? Took hours to find subtle bug that only showed up in Part 2, see code comment.
+Had to unwind the recursion to find it! Also resorted to trying a solution off thw web (without reading it) just to check
+the puzzle wasn't broken - which of course it wasn't!
 
 ## Day 23
 ### Part 1
