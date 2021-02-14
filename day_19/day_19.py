@@ -57,6 +57,7 @@ found = False
 
 # Test target
 target = "CRnCaSiRnBSiRnFArTiBPTiTiBFArPBCaSiThSi"
+target = FORMULA
 
 
 # Change from string of elements into a list
@@ -73,24 +74,36 @@ def break_down_formula(formula):
 # Work out for each element what other elements it can change to (ignoring
 # the trailing elements)
 POSSIBILITIES = {}
+CHOICES = {}
 
 for k in REPLACEMENTS.keys():
     possiblities = set()
-    test = set()
+    choices = set()
+    tracker = set()
     starts = REPLACEMENTS[k]
+    choices |= set(starts)
     while starts:
         new_starts = []
         for x in starts:
             elem = x[0:2] if len(x) >=2 and x[1].islower() else x[0]
+            rest = x[len(elem):]
 
-            if elem not in possiblities:
-                possiblities.add(elem)
-                if elem in REPLACEMENTS:
-                    new_starts.extend(REPLACEMENTS[elem])
+            # if elem not in possiblities:
+            possiblities.add(elem)
+            if elem in REPLACEMENTS:
+                for i in REPLACEMENTS[elem]:
+                    temp = i + rest
+                    if temp not in choices:
+                        if i not in tracker:
+                            new_starts.append(temp)
+                        tracker.add(i)
+                        choices.add(temp)
         starts = new_starts
     POSSIBILITIES[k] = possiblities
+    CHOICES[k] = choices
 
 print(POSSIBILITIES)
+print(CHOICES)
 
 MAX = 0
 
@@ -100,12 +113,24 @@ def solve(incoming, target):
     def _solve(so_far, index, prev=[]):
         global MAX
 
-        print("\n", "".join(so_far[:index]), "".join(so_far[index:]))
-        print("", "".join(target[:index]), "".join(target[index:]))
         elem = so_far[index]
+        if index > MAX:
+            MAX = index
+            print(MAX)
+
+        if so_far == target:
+            print("Halt")
+            raise Exception(MAX)
+
+        if index >= len(target):
+            print("Too long")
+            return
+
+        # print("\n", "".join(so_far[:index]), "".join(so_far[index:]))
+        # print("", "".join(target[:index]), "".join(target[index:]))
         if index in failures_by_index and elem in failures_by_index[index]:
             return
-        print(elem)
+        # print(elem)
         if elem not in REPLACEMENTS:
             # It is an element that we cannot transform
             # If it matches then skip it
@@ -118,23 +143,26 @@ def solve(incoming, target):
                 f = failures_by_index.get(index, set())
                 f.add(elem)
                 failures_by_index[index] = f
-                print("Deadend 1")
+                # print("Deadend 1")
                 return
 
-        if not target[index] in POSSIBILITIES[elem]:
+        # Check already matched
+        if target[index] == elem:
+            _solve(so_far, index + 1)
+        elif not target[index] in POSSIBILITIES[elem]:
             f = failures_by_index.get(index, set())
             f.add(elem)
             failures_by_index[index] = f
-            print("Deadend 2")
+            # print("Deadend 2")
             return
-        for r in REPLACEMENTS[elem]:
-            print("current", elem)
+        for r in CHOICES[elem]:
+            if index > 200:
+                print(index, r)
+            # print("current", elem, r)
             expand = break_down_formula(r)
             prefix = so_far[:index]
             suffix = so_far[index + 1:]
             if expand[0] == target[index]:
-                MAX = max(MAX, index)
-                print(MAX)
                 _solve(prefix + expand + suffix, index + 1)
 
             # Evolve the first element
@@ -143,13 +171,13 @@ def solve(incoming, target):
 
             # SPIKE: ignore Ca => CaF style for now as need to work out how to handle those
             # And P => BP
-            if expand == prev:
-                continue
-
-            if len(prefix + expand + suffix) < len(target):
-                _solve(prefix + expand + suffix, index, expand)
-            else:
-                return
+            # if expand == prev:
+            #     continue
+            #
+            # if len(prefix + expand + suffix) < len(target):
+            #     _solve(prefix + expand + suffix, index, expand)
+            # else:
+            #     return
 
 
     _solve(incoming, 0, [])
