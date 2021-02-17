@@ -68,11 +68,30 @@ def break_down_formula(formula):
             formula[0:2] if len(formula) >= 2 and formula[1].islower() else formula[0]
         )
         result.append(elem)
-        formula = formula[len(elem) :]
+        formula = formula[len(elem):]
     return result
 
 
-target = target.replace("Rn", "(").replace("Y", "|").replace("Ar", ")")
+# Simplify by replacing two letter elements with one char
+SIMPLIFIED = {
+    "Rn": "(",
+    "Y": "|",
+    "Ar": ")",
+    "C": "Z",
+}
+
+index = ord("A")
+
+for k in REPLACEMENTS.keys():
+    rep = chr(index)
+    SIMPLIFIED[k] = chr(index)
+    index += 1
+
+bdt = break_down_formula(target)
+target = ""
+
+for k in bdt:
+    target += SIMPLIFIED[k]
 print(target)
 
 
@@ -80,8 +99,11 @@ REVERSED_RECIPES = {}
 
 for k, v in REPLACEMENTS.items():
     for i in v:
-        assert i not in REVERSED_RECIPES
-        REVERSED_RECIPES[i.replace("Rn", "(").replace("Y", "|").replace("Ar", ")")] = k
+        rep = break_down_formula(i)
+        converted = ""
+        for c in rep:
+            converted += SIMPLIFIED[c]
+        REVERSED_RECIPES[converted] = SIMPLIFIED[k]
 print(REVERSED_RECIPES)
 
 
@@ -89,20 +111,21 @@ def solve(formula):
     def _replace(formula, count):
         import re
 
-        two_elements_together = "[A-Z][a-z]?[A-Z][a-z]?"
-        two_elements_then_open_bracket = "[A-Z][a-z]?[A-Z][a-z]?\("
-        one_element_in_brackets = "[A-Z][a-z]?\([A-Z][a-z]?\)"
-        two_element_then_closing_bracket = "[A-Z][a-z]?[A-Z][a-z]?\)"
-        two_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\)"
-        three_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\|[A-Z][a-z]?\)"
+        two_elements_together = r"[A-Z][A-Z]"
+        two_elements_then_open_bracket = r"[A-Z][A-Z]\("
+        one_element_in_brackets = r"[A-Z]\([A-Z]\)"
+        two_element_then_closing_bracket = r"[A-Z][A-Z]\)"
+        two_elements_in_bracket = r"[A-Z]\([A-Z]\|[A-Z]\)"
+        three_elements_in_bracket = r"[A-Z]\([A-Z]\|[A-Z]\|[A-Z]\)"
 
         replacement = None
 
-        for reg in [three_elements_in_bracket, two_elements_in_bracket, one_element_in_brackets,
-                    two_element_then_closing_bracket, two_elements_then_open_bracket, two_elements_together]:
-            m = re.search(reg, formula)
+        for reg in [three_elements_in_bracket, two_elements_in_bracket,
+                    one_element_in_brackets,
+                    two_element_then_closing_bracket,
+                    two_elements_then_open_bracket, two_elements_together]:
             temp = formula
-            while m:
+            while m := re.search(reg, temp):
                 string = temp[m.regs[0][0]:m.regs[0][1]]
                 if string in REVERSED_RECIPES:
                     replacement = (string, REVERSED_RECIPES[string])
@@ -113,9 +136,6 @@ def solve(formula):
                             replacement = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
                             break
                 temp = temp[m.regs[0][0] + 1:]
-                m = re.search(
-                    reg,
-                    temp)
             if replacement:
                 break
 
@@ -130,7 +150,8 @@ def solve(formula):
     count = 0
     while True:
         formula, count = _replace(formula, count)
-        if formula == "e":
+        print(formula)
+        if formula == SIMPLIFIED["e"]:
             # 195
             print(f"answer = {count}")
             break
@@ -147,3 +168,4 @@ breakdown = break_down_formula(target)
 # A(B|C) same as previous but another -1 for the the '|'
 # A(B|C|D) same as previous but another -1 for the extra '|'
 total = len(breakdown) - 1 - breakdown.count("(") - breakdown.count(")") - 2 * breakdown.count("|")
+print(f"answer = {total}")
