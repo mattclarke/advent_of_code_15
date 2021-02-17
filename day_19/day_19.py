@@ -96,7 +96,7 @@ def solve(formula):
         two_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\)"
         three_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\|[A-Z][a-z]?\)"
 
-        match_strs = None
+        replacement = None
 
         for reg in [three_elements_in_bracket, two_elements_in_bracket, one_element_in_brackets,
                     two_element_then_closing_bracket, two_elements_then_open_bracket, two_elements_together]:
@@ -105,22 +105,23 @@ def solve(formula):
             while m:
                 string = temp[m.regs[0][0]:m.regs[0][1]]
                 if string in REVERSED_RECIPES:
-                    match_strs = (string, REVERSED_RECIPES[string])
+                    replacement = (string, REVERSED_RECIPES[string])
                     break
                 else:
                     if string.endswith(")") or string.endswith("("):
                         if string[0:-1] in REVERSED_RECIPES:
-                            match_strs = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
+                            replacement = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
                             break
                 temp = temp[m.regs[0][0] + 1:]
                 m = re.search(
                     reg,
                     temp)
-            if match_strs:
+            if replacement:
                 break
 
-        if match_strs:
-            formula = formula.replace(match_strs[0], match_strs[1])
+        if replacement:
+            print(replacement[0], replacement[1])
+            formula = formula.replace(replacement[0], replacement[1])
             count += 1
 
         return formula, count
@@ -128,7 +129,7 @@ def solve(formula):
     count = 0
     while True:
         formula, count = _replace(formula, count)
-        print(formula)
+        print(">>>", formula)
         if formula == "e":
             # Currently count is two low, should be 195
             print(f"answer = {count}")
