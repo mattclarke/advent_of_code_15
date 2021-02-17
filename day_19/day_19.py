@@ -117,32 +117,32 @@ def solve(formula):
         two_element_then_closing_bracket = r"[A-Z][A-Z]\)"
         two_elements_in_bracket = r"[A-Z]\([A-Z]\|[A-Z]\)"
         three_elements_in_bracket = r"[A-Z]\([A-Z]\|[A-Z]\|[A-Z]\)"
+        swap_with = None
 
-        replacement = None
-
+        # It is important that this regexes are run in the right order
         for reg in [three_elements_in_bracket, two_elements_in_bracket,
                     one_element_in_brackets,
                     two_element_then_closing_bracket,
                     two_elements_then_open_bracket, two_elements_together]:
-            temp = formula
-            while m := re.search(reg, temp):
-                string = temp[m.regs[0][0]:m.regs[0][1]]
+            temp_formula = formula
+            while m := re.search(reg, temp_formula):
+                string = temp_formula[m.regs[0][0]:m.regs[0][1]]
                 if string in REVERSED_RECIPES:
-                    replacement = (string, REVERSED_RECIPES[string])
+                    swap_with = (string, REVERSED_RECIPES[string])
                     break
                 else:
                     if string.endswith(")") or string.endswith("("):
                         if string[0:-1] in REVERSED_RECIPES:
-                            replacement = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
+                            swap_with = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
                             break
-                temp = temp[m.regs[0][0] + 1:]
-            if replacement:
+                temp_formula = temp_formula[m.regs[0][0] + 1:]
+            if swap_with:
                 break
 
-        if replacement:
-            prefix = formula[0:formula.index(replacement[0])]
-            suffix = formula[formula.index(replacement[0]) + len(replacement[0]):]
-            formula = prefix + replacement[1] + suffix
+        if swap_with:
+            prefix = formula[0:formula.index(swap_with[0])]
+            suffix = formula[formula.index(swap_with[0]) + len(swap_with[0]):]
+            formula = prefix + swap_with[1] + suffix
             count += 1
 
         return formula, count

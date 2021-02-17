@@ -113,7 +113,12 @@ of the size and a unique number so they appear different when hashed, so I can u
 ### Part 1
 * Just need to remember that some molecules are more than one character, e.g. Si.
 ### Part 2
-* TODO
+* This took an unholy amount of time (hours and hours!) - in the end I had to look on the web. The key insight was to
+replace `Rn`, `Y` and `Ar` with `(`, `|` and `)` respectively then the target has the form of `ABC(DE)F(G|H)IJ` which
+shows a structure to it. I then used regexes to reduce the target starting with the nested brackets and working outwards.
+I think my solution can be simplified further, but I have had enough of it.
+
+I included the one line solution I found on the web T.T
 
 ## Day 20
 ### Part 1
