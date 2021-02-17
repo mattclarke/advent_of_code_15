@@ -90,23 +90,28 @@ def solve(formula):
         import re
 
         two_elements_together = "[A-Z][a-z]?[A-Z][a-z]?"
-        two_elements_then_bracket = "[A-Z][a-z]?[A-Z][a-z]?\("
+        two_elements_then_open_bracket = "[A-Z][a-z]?[A-Z][a-z]?\("
         one_element_in_brackets = "[A-Z][a-z]?\([A-Z][a-z]?\)"
+        two_element_then_closing_bracket = "[A-Z][a-z]?[A-Z][a-z]?\)"
         two_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\)"
         three_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\|[A-Z][a-z]?\)"
 
         match_strs = None
 
-        for reg in [three_elements_in_bracket, two_elements_in_bracket, one_element_in_brackets, two_elements_then_bracket, two_elements_together]:
+        for reg in [three_elements_in_bracket, two_elements_in_bracket, one_element_in_brackets,
+                    two_element_then_closing_bracket, two_elements_then_open_bracket, two_elements_together]:
             m = re.search(reg, formula)
             temp = formula
             while m:
                 string = temp[m.regs[0][0]:m.regs[0][1]]
-                if string.endswith("("):
-                    string = string[:-1]
                 if string in REVERSED_RECIPES:
-                    match_strs = temp[m.regs[0][0]:m.regs[0][1]]
+                    match_strs = (string, REVERSED_RECIPES[string])
                     break
+                else:
+                    if string.endswith(")") or string.endswith("("):
+                        if string[0:-1] in REVERSED_RECIPES:
+                            match_strs = (string, REVERSED_RECIPES[string[0:-1]] + string[~0])
+                            break
                 temp = temp[m.regs[0][0] + 1:]
                 m = re.search(
                     reg,
@@ -115,10 +120,7 @@ def solve(formula):
                 break
 
         if match_strs:
-            if match_strs.endswith("("):
-                formula = formula.replace(match_strs, REVERSED_RECIPES[match_strs[:-1]] + "(")
-            else:
-                formula = formula.replace(match_strs, REVERSED_RECIPES[match_strs])
+            formula = formula.replace(match_strs[0], match_strs[1])
             count += 1
 
         return formula, count
@@ -127,9 +129,8 @@ def solve(formula):
     while True:
         formula, count = _replace(formula, count)
         print(formula)
-        if len(formula) < 10:
-            print(10)
-        if len(formula) == 1 and REVERSED_RECIPES[formula] == "e":
+        if formula == "e":
+            # Currently count is two low, should be 195
             print(f"answer = {count}")
             break
 
