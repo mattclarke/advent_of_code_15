@@ -41,9 +41,9 @@ for n in REPLACEMENTS:
     for r in REPLACEMENTS[n]:
         # TODO: don't need c
         for i, c in enumerate(FORMULA):
-            if FORMULA[i: i + len(n)] == n:
+            if FORMULA[i : i + len(n)] == n:
                 stem = FORMULA[:i]
-                rest = FORMULA[i + len(n):]
+                rest = FORMULA[i + len(n) :]
                 new_molecule = "".join([stem, r, rest])
                 distinct.add(new_molecule)
 
@@ -56,7 +56,7 @@ count = 0
 found = False
 
 # Test target
-target = "CRnCaSiRnBSiRnFArTiBPTiTiBFArPBCaSiThSi"
+target = "CaCaSiRnFYSiThCaRnFArAr"
 target = FORMULA
 
 
@@ -64,105 +64,81 @@ target = FORMULA
 def break_down_formula(formula):
     result = []
     while formula:
-        elem = formula[0:2] if len(formula) >= 2 and formula[1].islower() else \
-        formula[0]
+        elem = (
+            formula[0:2] if len(formula) >= 2 and formula[1].islower() else formula[0]
+        )
         result.append(elem)
-        formula = formula[len(elem):]
+        formula = formula[len(elem) :]
     return result
 
 
-# Work out for each element what other elements it can change to (ignoring
-# the trailing elements)
-POSSIBILITIES = {}
-CHOICES = {}
+target = target.replace("Rn", "(").replace("Y", "|").replace("Ar", ")")
+print(target)
 
-for k in REPLACEMENTS.keys():
-    possiblities = set()
-    choices = set()
-    tracker = set()
-    starts = REPLACEMENTS[k]
-    choices |= set(starts)
-    while starts:
-        new_starts = []
-        for x in starts:
-            elem = x[0:2] if len(x) >=2 and x[1].islower() else x[0]
-            rest = x[len(elem):]
 
-            # if elem not in possiblities:
-            possiblities.add(elem)
-            if elem in REPLACEMENTS:
-                for i in REPLACEMENTS[elem]:
-                    temp = i + rest
-                    if temp not in choices:
-                        if i not in tracker:
-                            new_starts.append(temp)
-                        tracker.add(i)
-                        choices.add(temp)
-        starts = new_starts
-    POSSIBILITIES[k] = possiblities
-    CHOICES[k] = choices
+REVERSED_RECIPES = {}
 
-print(POSSIBILITIES)
-print(CHOICES)
+for k, v in REPLACEMENTS.items():
+    for i in v:
+        assert i not in REVERSED_RECIPES
+        REVERSED_RECIPES[i.replace("Rn", "(").replace("Y", "|").replace("Ar", ")")] = k
+print(REVERSED_RECIPES)
 
-MAX = 0
+breakdown = break_down_formula(target)
+total = len(breakdown) - breakdown.count("(") - breakdown.count(")") - 2 * breakdown.count("|") - 1
 
-def solve(incoming, target):
-    failures_by_index = {}
 
-    def _solve(so_far, index, prev=[]):
-        global MAX
+def solve(formula):
+    def _replace(formula, count):
+        import re
 
-        elem = so_far[index]
-        if index > MAX:
-            MAX = index
-            print(MAX)
+        two_elements_together = "[A-Z][a-z]?[A-Z][a-z]?"
+        two_elements_then_bracket = "[A-Z][a-z]?[A-Z][a-z]?\("
+        one_element_in_brackets = "[A-Z][a-z]?\([A-Z][a-z]?\)"
+        two_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\)"
+        three_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\|[A-Z][a-z]?\)"
 
-        if so_far == target:
-            print("Halt")
-            raise Exception(MAX)
+        mn = re.search(two_elements_together, formula)
+        m0 = re.search(two_elements_then_bracket, formula)
+        m1 = re.search(one_element_in_brackets, formula)
+        m2 = re.search(two_elements_in_bracket, formula)
+        m3 = re.search(three_elements_in_bracket, formula)
 
-        if index >= len(target):
-            print("Too long")
-            return
+        match_strs = None
 
-        # print("\n", "".join(so_far[:index]), "".join(so_far[index:]))
-        # print("", "".join(target[:index]), "".join(target[index:]))
-        if index in failures_by_index and elem in failures_by_index[index]:
-            return
-        # print(elem)
-        if elem not in REPLACEMENTS:
-            # It is an element that we cannot transform
-            # If it matches then skip it
-            if elem == target[index]:
-                _solve(so_far, index + 1)
-                # Cannot do anything further with it
-                return
+        for reg in [three_elements_in_bracket, two_elements_in_bracket, one_element_in_brackets, two_elements_then_bracket, two_elements_together]:
+            m = re.search(reg, formula)
+            temp = formula
+            while m:
+                string = temp[m.regs[0][0]:m.regs[0][1]]
+                if string.endswith("("):
+                    string = string[:-1]
+                if string in REVERSED_RECIPES:
+                    match_strs = temp[m.regs[0][0]:m.regs[0][1]]
+                    break
+                temp = temp[m.regs[0][0] + 1:]
+                m = re.search(
+                    reg,
+                    temp)
+            if match_strs:
+                break
+
+        if match_strs:
+            if match_strs.endswith("("):
+                formula = formula.replace(match_strs, REVERSED_RECIPES[match_strs[:-1]] + "(")
             else:
-                # No good
-                f = failures_by_index.get(index, set())
-                f.add(elem)
-                failures_by_index[index] = f
-                # print("Deadend 1")
-                return
+                formula = formula.replace(match_strs, REVERSED_RECIPES[match_strs])
+            count += 1
 
-        # Check already matched
-        if target[index] == elem:
-            _solve(so_far, index + 1)
-        elif not target[index] in POSSIBILITIES[elem]:
-            f = failures_by_index.get(index, set())
-            f.add(elem)
-            failures_by_index[index] = f
-            # print("Deadend 2")
-            return
-        for r in CHOICES[elem]:
-            if index >= 224:
-                print(index, r, "".join(so_far))
-                # print("".join(target))
-                # raise Exception("Oops")
-            # print("current", elem, r)
-            expand = break_down_formula(r)
-            prefix = so_far[:index]
-            suffix = so_far[index + 1:]
-            if expand[0] == target[index]:
-                _solve(prefix + expand + suffix, index + 1)
+        return formula, count
+
+    count = 0
+    while True:
+        formula, count = _replace(formula, count)
+        print(formula)
+        if len(formula) == 1 and REVERSED_RECIPES[formula] == "e":
+            print(f"answer = {count}")
+            break
+
+
+solve(target)
