@@ -120,8 +120,9 @@ def solve(formula):
                 break
 
         if replacement:
-            print(replacement[0], replacement[1])
-            formula = formula.replace(replacement[0], replacement[1])
+            prefix = formula[0:formula.index(replacement[0])]
+            suffix = formula[formula.index(replacement[0]) + len(replacement[0]):]
+            formula = prefix + replacement[1] + suffix
             count += 1
 
         return formula, count
@@ -129,9 +130,8 @@ def solve(formula):
     count = 0
     while True:
         formula, count = _replace(formula, count)
-        print(">>>", formula)
         if formula == "e":
-            # Currently count is two low, should be 195
+            # 195
             print(f"answer = {count}")
             break
 
