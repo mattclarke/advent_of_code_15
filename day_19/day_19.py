@@ -84,9 +84,6 @@ for k, v in REPLACEMENTS.items():
         REVERSED_RECIPES[i.replace("Rn", "(").replace("Y", "|").replace("Ar", ")")] = k
 print(REVERSED_RECIPES)
 
-breakdown = break_down_formula(target)
-total = len(breakdown) - breakdown.count("(") - breakdown.count(")") - 2 * breakdown.count("|") - 1
-
 
 def solve(formula):
     def _replace(formula, count):
@@ -97,12 +94,6 @@ def solve(formula):
         one_element_in_brackets = "[A-Z][a-z]?\([A-Z][a-z]?\)"
         two_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\)"
         three_elements_in_bracket = "[A-Z][a-z]?\([A-Z][a-z]?\|[A-Z][a-z]?\|[A-Z][a-z]?\)"
-
-        mn = re.search(two_elements_together, formula)
-        m0 = re.search(two_elements_then_bracket, formula)
-        m1 = re.search(one_element_in_brackets, formula)
-        m2 = re.search(two_elements_in_bracket, formula)
-        m3 = re.search(three_elements_in_bracket, formula)
 
         match_strs = None
 
@@ -136,9 +127,21 @@ def solve(formula):
     while True:
         formula, count = _replace(formula, count)
         print(formula)
+        if len(formula) < 10:
+            print(10)
         if len(formula) == 1 and REVERSED_RECIPES[formula] == "e":
             print(f"answer = {count}")
             break
 
 
 solve(target)
+
+
+# Solution from the web = 195
+breakdown = break_down_formula(target)
+# Every pair reduces down to one element (e.g. ABC => DE => F), for n elements (excluding non-reducibles) = n - 1
+# Non-reducibles are in form of A(B) or A(B|C) or A(B|C|D)
+# A(B) gets swallowed as one move, so -1 for the '(' and the ')'
+# A(B|C) same as previous but another -1 for the the '|'
+# A(B|C|D) same as previous but another -1 for the extra '|'
+total = len(breakdown) - 1 - breakdown.count("(") - breakdown.count(")") - 2 * breakdown.count("|")
