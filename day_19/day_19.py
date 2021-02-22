@@ -167,5 +167,6 @@ breakdown = break_down_formula(target)
 # A(B) gets swallowed as one move, so -1 for the '(' and the ')'
 # A(B|C) same as previous but another -1 for the the '|'
 # A(B|C|D) same as previous but another -1 for the extra '|'
+# NOTE: assumes the formula is solvable!
 total = len(breakdown) - 1 - breakdown.count("(") - breakdown.count(")") - 2 * breakdown.count("|")
 print(f"answer = {total}")
