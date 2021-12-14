@@ -29,7 +29,7 @@ From the web, the first rule can be done with `re.search(r"(..).*\1", line)` and
 
 ## Day 6
 ### Part 1
-* Simple enough to do. Used regexes because day 5 showed me that I needed some practise!
+* Simple enough to do. Used regexes because day 5 showed me that I needed some practice!
 ### Part 2
 * Slight variation.
 
